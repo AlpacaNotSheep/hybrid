@@ -1,4 +1,3 @@
-### js版对比工具*difflib*
-> http://cemerick.github.io/jsdifflib
-### demo示例
-> http://cemerick.github.io/jsdifflib/demo.html
+http://cemerick.github.io/jsdifflib
+
+http://cemerick.github.io/jsdifflib/demo.html
