@@ -36,7 +36,7 @@ hybrid常用来形容App混合框架。
 >* 如何自行封装约定
 >* 原理解释及坑坑洼洼
 >
-> 感谢“不是绵羊，是羊驼”组织成员的辛苦贡献
+> 感谢“不是绵羊，是羊驼”([AlpacaNotSheep](https://github.com/AlpacaNotSheep/)) 组织各成员的辛苦贡献。
 
 
 
