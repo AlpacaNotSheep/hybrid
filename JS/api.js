@@ -1,13 +1,13 @@
 /*
- * @Author: Kyle-peng
+ * @Author: Kyle
  * @Date: 2017-02-16 10:36:03
- * @Last Modified by: Kyle-peng
+ * @Last Modified by: Kyle
  * @Last Modified time: 2017-08-02 18:32:42
  */
 var api = (function(window, document) {
     'use strict';
     try {
-        document.domain = 'uzai.com';
+        document.domain = 'demo.com';
     } catch (e) {
         console.log(e.message);
     }
@@ -17,14 +17,7 @@ var api = (function(window, document) {
         iosGetTimes = 0,
         apiUrlPre = 'MobileCommon/RequestWebApi/544',
         path = {
-            dingzhilogic: 'http://mdingzhilogic.uzai.com/api/',
-            msitelogic: 'http://msitelogic.uzai.com/api/',
-            mhomelogic: 'http://mhomelogic.uzai.com/api/',
-            mcurrencylogic: 'http://mcurrencylogic.uzai.com/api/',
-            mproductlogic: 'http://mproductlogic.uzai.com/api/',
-            mbuylogic: 'http://mbuylogic.uzai.com/api/',
-            mpaylogic: 'http://mpaylogic.uzai.com/api/',
-            msearchlogic: 'http://msearchlogic.uzai.com/api/'
+            demoApi: 'http://demo.com/api/'
         },
         loginConfig = {
             from: document.referrer,
@@ -39,7 +32,6 @@ var api = (function(window, document) {
         android = {},
         api = {
             version: version,
-            appCurrentVersion: '6.0.4',
             path: path,
             backUrl: backUrl,
             serverVirtualDir: serverVirtualDir,
@@ -52,19 +44,10 @@ var api = (function(window, document) {
             init: function() {
                 //默认开启异步加载检测代码
                 function asyncLoadScripts() {
-                    /** 无论APP还是M站点，都需要添加ga、pagestatistics
-                     * M站 默认开启异步加载检测代码
-                     * app里面没有魔窗
-                     * 如果不需要魔窗就在页面的JS里面把asyncLoadingCode设置成0。
-                     * api.__asyncLoadingCode__ = '0';
-                     * 2016/11/30 Kyle
-                     */
-                    let $array = ['r03.uzaicdn.com/content/hybrid/scripts/common/pagestatistics.js'],
-                        $arrayScript = ['r03.uzaicdn.com/content/hybrid/scripts/common/gmlinks.js'],
+                    let $array = ['demo.js'],
                         $hasScripts = document.getElementsByTagName('script'),
-                        $frgmentGa = document.createDocumentFragment(),
-                        $frgmentGmlinks = document.createDocumentFragment(),
-                        _arrayHasScripts = [];
+                        $frgment = document.createDocumentFragment()
+                    _arrayHasScripts = [];
                     for (let a = 0; a < $hasScripts.length; a++) {
                         _arrayHasScripts = _arrayHasScripts.concat($hasScripts[a].getAttribute('src'));
                     }
@@ -74,39 +57,10 @@ var api = (function(window, document) {
                             let _scripts = document.createElement('script');
                             _scripts.setAttribute('async', 'async');
                             _scripts.setAttribute('src', 'https://' + $array[a]);
-                            $frgmentGa.appendChild(_scripts);
+                            $frgment.appendChild(_scripts);
                         }
                     }
-                    document.body.appendChild($frgmentGa);
-                    /** 魔窗加载 Begin
-                     * 兼容老版本app,app端魔窗不显示
-                     * cookie有uzmGdownloadTip=1 不显示
-                     * url:https://m.uzai.com/?uzmGdownloadTip=0 为强行显示，不管是否有cookie值
-                     * url:https://m.uzai.com/?uzmGdownloadTip=1 为强行不显示，不管是否有cookie值
-                     * 判断后加载
-                     */
-                    let source = api.getQueryString('source');
-                    if (api.isApp() || source === 'iphone' || source === 'android') {
-                        return false;
-                    }
-                    let hasMlinkCookie = api.getCookie('uzmGdownloadTip'); //取缓存魔窗的cookie
-                    let hasMlinkURL = api.getQueryString('uzmGdownloadTip'); //取参数魔窗的参数
-                    if (hasMlinkURL && hasMlinkURL !== '0') { //参数值不等于null的时候存cookie
-                        api.setCookie('uzmGdownloadTip', '1', 2592000);
-                    } else if (!hasMlinkURL || hasMlinkURL === '0') {
-                        if (!hasMlinkCookie || hasMlinkURL === '0') {
-                            for (let a = 0; a < $arrayScript.length; a++) {
-                                if (_arrayHasScripts.indexOf($arrayScript[a]) < 0) {
-                                    let _scripts = document.createElement('script');
-                                    _scripts.setAttribute('async', 'async');
-                                    _scripts.setAttribute('src', 'https://' + $arrayScript[a]);
-                                    $frgmentGmlinks.appendChild(_scripts);
-                                }
-                            }
-                            document.body.appendChild($frgmentGmlinks);
-                        }
-                    }
-                    /*魔窗加载 End*/
+                    document.body.appendChild($frgment);
                 }
                 //默认开启异步加载检测代码
                 asyncLoadScripts();
@@ -213,11 +167,11 @@ var api = (function(window, document) {
                     android.setCookie(key, value, timeout);
                 } else {
                     if (timeout === 0) {
-                        document.cookie = key + '=' + value + ';domain=.uzai.com;path=/';
+                        document.cookie = key + '=' + value + ';domain=.demo.com;path=/';
                     } else {
                         var exp = new Date();
                         exp.setTime(exp.getTime() + timeout * 1000);
-                        document.cookie = key + '=' + value + ';expires=' + exp.toGMTString() + ';domain=.uzai.com;path=/';
+                        document.cookie = key + '=' + value + ';expires=' + exp.toGMTString() + ';domain=.demo.com;path=/';
                     }
                 }
             },
@@ -231,7 +185,7 @@ var api = (function(window, document) {
                     var exp = new Date();
                     exp.setTime(exp.getTime() - 3600 * 24);
                     var value = '';
-                    document.cookie = key + '=' + value + ';expires=' + exp.toGMTString() + ';domain=.uzai.com;path=/';
+                    document.cookie = key + '=' + value + ';expires=' + exp.toGMTString() + ';domain=.demo.com;path=/';
                 }
             },
             //存入sessionStorage
@@ -390,7 +344,7 @@ var api = (function(window, document) {
                         needLogin = false;
                     }
                     if (needLogin) {
-                        location.href = 'https://mhome.uzai.com/Member/login.html?reurl=' + location.href;
+                        location.href = 'https://demo.com/login.html?url=' + location.href;
                     } else {
                         postTimes++;
                         api.__callback__.push([postTimes, callback, $scope]);
@@ -542,14 +496,14 @@ var api = (function(window, document) {
                 if (!api.isApp()) {
                     var source = api.getQueryString('source'),
                         loginUrl = '',
-                        loginDomain = 'http:u.uzai.com';
+                        loginDomain = 'http:demo.com';
                     if (source == 'iphone' || source == 'android') {
                         loginUrl = '/AppLogin?loginSucceedUrl=' + loginDomain + '/mobile/AppAutoLogin';
                         loginUrl += '?refUrl=' + forword;
                         location.href = loginUrl;
                         return false;
                     } else {
-                        location.href = 'https://mhome.uzai.com/member/login.html?reurl=' + forword;
+                        location.href = 'https://demo.com/login.html?url=' + forword;
                     }
                 } else {
                     if (devicetype == 'ios') {
@@ -557,7 +511,7 @@ var api = (function(window, document) {
                     } else if (devicetype == 'android') {
                         window.action.exec('login', loginParam);
                     } else {
-                        location.href = 'https://mhome.uzai.com/member/login.html?reurl=' + forword;
+                        location.href = 'https://demo.com/login.html?url=' + forword;
                     }
                 }
             },
@@ -569,7 +523,7 @@ var api = (function(window, document) {
                 } else {
                     var user = api.getCookie('user');
                     if (!user || typeof(user) == 'undefined' || user.length < 5) {
-                        location.href = 'https://mhome.uzai.com/Member/login.html?reurl=' + location.href;
+                        location.href = 'https://demo.com/login.html?url=' + location.href;
                     } else {
                         callback();
                     }
@@ -582,7 +536,7 @@ var api = (function(window, document) {
                     android.logout();
                 } else {
                     api.removeCookie('user');
-                    location.href = 'https://mhome.uzai.com/Member/login.html';
+                    location.href = 'https://demo.com/login.html';
                 }
             },
             invoke: function(action, param) {
@@ -650,7 +604,7 @@ var api = (function(window, document) {
             //子页面返回使用
             routerGoBack: function(viewName) {
                 var section;
-                    //angular = window.angular;
+                //angular = window.angular;
                 if (api.isApp()) {
                     if (viewName === '' || typeof(viewName) === 'undefined' || viewName === null) {
                         viewName = window.location.hash.replace('#\/', '');
@@ -658,7 +612,7 @@ var api = (function(window, document) {
                     section = document.getElementById('J_router_' + viewName);
                     section.classList.remove('J-router-show');
                 }
-                document.getElementsByClassName('uzai-wrapper')[0].classList.remove('hide');
+                document.getElementsByClassName('demo-wrapper')[0].classList.remove('hide');
                 api.endloading();
                 window.location.hash = '';
                 var ua = window.navigator.userAgent.toLowerCase();
@@ -739,11 +693,11 @@ var api = (function(window, document) {
                     [].filter.call(routerElements, function(el) {
                         el.classList.remove('J-router-show');
                     });
-                    document.getElementsByClassName('uzai-wrapper')[0].classList.remove('hide');
+                    document.getElementsByClassName('demo-wrapper')[0].classList.remove('hide');
                 }
                 if (typeof(viewName) != 'undefined' && viewName != '') {
                     api.__scrolltop__ = document.body.scrollTop;
-                    document.getElementsByClassName('uzai-wrapper')[0].classList.add('hide');
+                    document.getElementsByClassName('demo-wrapper')[0].classList.add('hide');
                     div.classList.add('J-router-show');
                 }
             }
@@ -784,13 +738,13 @@ var api = (function(window, document) {
                 };
                 $http.get(getURL, {}, config).success(function(data) {
                     self.append(viewName, data, $http, $scope, $compile);
-                    if (document.getElementsByClassName('uzai-member-noload')[0]) { // 处理会员登录注册页面loading层级高的问题
+                    if (document.getElementsByClassName('demo-member-noload')[0]) { // 处理会员登录注册页面loading层级高的问题
                         document.getElementById('loading').classList.remove('zHide');
                     }
                 }).error(function() {
                     window.location.hash = '';
                     api.endloading();
-                    if (document.getElementsByClassName('uzai-member-noload')[0]) { // 处理会员登录注册页面loading层级高的问题
+                    if (document.getElementsByClassName('demo-member-noload')[0]) { // 处理会员登录注册页面loading层级高的问题
                         document.getElementById('loading').classList.add('zHide');
                     }
                     api.toast('网络链接失败，请重试', 1500);
@@ -852,7 +806,7 @@ var api = (function(window, document) {
                 });
             }
             setTimeout(function() {
-                document.getElementsByClassName('uzai-wrapper')[0].classList.add('hide');
+                document.getElementsByClassName('demo-wrapper')[0].classList.add('hide');
                 createElement.classList.add('J-router-show');
                 //angular.element(createElement).addClass('J-router-show').siblings().removeClass('J-router-show');
             }, 500);
@@ -972,7 +926,7 @@ var api = (function(window, document) {
                 try {
                     var iframe;
                     iframe = document.createElement('iframe');
-                    iframe.setAttribute('src', action + '://uzai?' + param);
+                    iframe.setAttribute('src', action + '://demo?' + param);
                     iframe.setAttribute('style', 'display:none;');
                     iframe.setAttribute('height', '0px');
                     iframe.setAttribute('width', '0px');
