@@ -1,5 +1,5 @@
 /**
- * Created by liuguozhu on 16/6/3.
+ * Created by John on 16/6/3.
  */
 /*global api devicetype*/
 /*eslint no-unused-vars: ["error", { "varsIgnorePattern": "bridge" }]*/
@@ -28,13 +28,13 @@ var bridge = (function(window) {
     bridge.openIndex = function() {
         var pageParam = deepClone(pageBaseParam);
         if (!api.isApp()) {
-            window.location = 'https://m.uzai.com';
+            window.location = 'https://m.demo.com';
         } else {
             if (devicetype === 'ios') {
                 pageParam.ClassInfo = { 'ClassName': 'UZHomeVC', 'cocoaPodName': 'UZHomeModule', 'isXib': false };
                 pageParam.IsTabBar = true;
             } else if (devicetype === 'android') {
-                pageParam.ClassInfo = { 'ClassName': 'com.uzai.app.activity.fragment.MainActivityFragment' };
+                pageParam.ClassInfo = { 'ClassName': 'com.demo.app.activity.fragment.MainActivityFragment' };
                 pageParam.IsTabBar = true;
             }
             api.invoke('open.page', encodeURI(JSON.stringify(pageParam)));
@@ -44,7 +44,7 @@ var bridge = (function(window) {
     bridge.openUser = function() {
         var pageParam = deepClone(pageBaseParam);
         if (!api.isApp()) {
-            window.location = 'https://mhome.uzai.com/Member/index.html';
+            window.location = 'https://mhome.demo.com/Member/index.html';
         } else {
             if (devicetype === 'ios') {
                 pageParam.ClassInfo = { 'ClassName': 'UZHomeVC', 'cocoaPodName': 'UZHomeModule', 'isXib': false };
@@ -53,9 +53,9 @@ var bridge = (function(window) {
             } else if (devicetype === 'android') {
                 var appversion = api.getCookie('appversion');
                 if (typeof(appversion) !== 'undefined' && appversion !== null && appversion >= '6.0.0') {
-                    pageParam.ClassInfo = { 'ClassName': 'com.uzai.app.mvp.module.home.myuzai.fragment.MyUzaiProFragment.class' };
+                    pageParam.ClassInfo = { 'ClassName': 'com.demo.app.mvp.module.home.mydemo.fragment.MydemoProFragment.class' };
                 } else {
-                    pageParam.ClassInfo = { 'ClassName': 'com.uzai.app.activity.fragment.MainActivityFragment' };
+                    pageParam.ClassInfo = { 'ClassName': 'com.demo.app.activity.fragment.MainActivityFragment' };
                 }
                 pageParam.TabBarIndex = 4;
                 pageParam.IsTabBar = true;
@@ -102,9 +102,9 @@ var bridge = (function(window) {
             } else if (devicetype === 'android') {
                 var hybridversion = api.getQueryString('hybridversion');
                 if (hybridversion >= 1) {
-                    pageParam.ClassInfo = { 'ClassName': 'com.uzai.app.mvp.module.login.MemberLevelActivity' };
+                    pageParam.ClassInfo = { 'ClassName': 'com.demo.app.mvp.module.login.MemberLevelActivity' };
                 } else {
-                    pageParam.ClassInfo = { 'ClassName': 'com.uzai.app.activity.MemberLevelActivity' };
+                    pageParam.ClassInfo = { 'ClassName': 'com.demo.app.activity.MemberLevelActivity' };
                 }
                 pageParam.Content = { 'userLevel': memlevel };
                 pageParam.GA += gaInfo;
@@ -128,7 +128,7 @@ var bridge = (function(window) {
     /*
      * travelType 产品类型  1,2,3：跟团
      * productId  产品Id
-     * travelType 对应数据库表UzaiTravelClassID
+     * travelType 对应数据库表demoTravelClassID
      * isHistoryPage 跳转过来的页面是不是历史记录页，默认不传这个值  为undefined
      *
      * */
@@ -156,9 +156,9 @@ var bridge = (function(window) {
         //GA信息
         var gaInfo = '->' + travelTypeName + '产品页';
         if (!api.isApp()) {
-            //跟团url：https://m.uzai.com/waptour-129959.html
-            //自由行url：https://m.uzai.com/trip/wap/129959.html
-            var baseUrl = 'https://m.uzai.com/';
+            //跟团url：https://m.demo.com/waptour-129959.html
+            //自由行url：https://m.demo.com/trip/wap/129959.html
+            var baseUrl = 'https://m.demo.com/';
             //默认链接到原来的跟团产品链接
             var endUrl = 'waptour-' + productId + '.html';
             //判断 source 判断app版本5.5.0 新旧
@@ -221,14 +221,14 @@ var bridge = (function(window) {
                     } else {
                         //550 版本 － 打开原生自由行产品详情
                         pageParam.ClassInfo = { 'ClassName': 'UZProductInfoVC', 'isStoryBoard': '1', 'storyBoardIdentifier': 'ProductInfoVC', 'cocoaPodName': 'UZProductDetailModule', 'isXib': false };
-                        pageParam.Content = { 'productId': productId, 'uzaiProductClassId': travelTypeName };
+                        pageParam.Content = { 'productId': productId, 'demoProductClassId': travelTypeName };
                         pageParam.ServicesInfo = { 'serviceClass': 'UZProductService', 'serviceName': 'service', serviceMethod: '' };
                         pageParam.GA += gaInfo;
                     }
                 } else {
                     // 550 之前的产品详情页
                     pageParam.ClassInfo = { 'ClassName': 'UZProductInfoVC', 'isStoryBoard': '1', 'storyBoardIdentifier': 'ProductInfoVC', 'cocoaPodName': 'UZProductDetailModule', 'isXib': false };
-                    pageParam.Content = { 'productId': productId, 'uzaiProductClassId': travelTypeName };
+                    pageParam.Content = { 'productId': productId, 'demoProductClassId': travelTypeName };
                     pageParam.ServicesInfo = { 'serviceClass': 'UZProductService', 'serviceName': 'service', serviceMethod: '' };
                     pageParam.GA += gaInfo;
                 }
@@ -237,34 +237,34 @@ var bridge = (function(window) {
                 if (lineType === 10) {
                     //app 新架构 5.4.8
                     if (hybridversion === '1') {
-                        pageParam.ClassInfo = { 'ClassName': 'com.uzai.app.mvp.module.product.activity.ProductDetailUi540' };
+                        pageParam.ClassInfo = { 'ClassName': 'com.demo.app.mvp.module.product.activity.ProductDetailUi540' };
                     }
                     //app 新架构 5.5.0
                     else if (hybridversion === '3') {
-                        pageParam.ClassInfo = { 'ClassName': 'com.uzai.app.mvp.module.hybrid.activity.ProductDetail548Activity' };
+                        pageParam.ClassInfo = { 'ClassName': 'com.demo.app.mvp.module.hybrid.activity.ProductDetail548Activity' };
                     }
                     //5.4.8之前版本
                     else {
-                        pageParam.ClassInfo = { 'ClassName': 'com.uzai.app.activity.ProductDetailUi540' };
+                        pageParam.ClassInfo = { 'ClassName': 'com.demo.app.activity.ProductDetailUi540' };
                     }
-                    pageParam.Content = { 'ProductID': productId, 'UzaiTravelClass': travelTypeName };
+                    pageParam.Content = { 'ProductID': productId, 'demoTravelClass': travelTypeName };
                     pageParam.GA += gaInfo;
                 }
                 //非跟团
                 else {
                     //app 新架构 5.4.8
                     if (hybridversion === '1') {
-                        pageParam.ClassInfo = { 'ClassName': 'com.uzai.app.mvp.module.product.activity.ProductDetailUi540' };
+                        pageParam.ClassInfo = { 'ClassName': 'com.demo.app.mvp.module.product.activity.ProductDetailUi540' };
                     }
                     //app 新架构 5.5.0
                     else if (hybridversion === '3') {
-                        pageParam.ClassInfo = { 'ClassName': 'com.uzai.app.mvp.module.product.activity.ProductDetailUi540' };
+                        pageParam.ClassInfo = { 'ClassName': 'com.demo.app.mvp.module.product.activity.ProductDetailUi540' };
                     }
                     //5.4.8之前版本
                     else {
-                        pageParam.ClassInfo = { 'ClassName': 'com.uzai.app.activity.ProductDetailUi540' };
+                        pageParam.ClassInfo = { 'ClassName': 'com.demo.app.activity.ProductDetailUi540' };
                     }
-                    pageParam.Content = { 'ProductID': productId, 'UzaiTravelClass': travelTypeName };
+                    pageParam.Content = { 'ProductID': productId, 'demoTravelClass': travelTypeName };
                     pageParam.GA += gaInfo;
                 }
             }
@@ -282,16 +282,16 @@ var bridge = (function(window) {
             if (devicetype === 'ios') {
                 pageParam.ClassInfo = { 'ClassName': 'UZDingzhiYouVC', 'isStoryBoard': '0', 'storyBoardIdentifier': '', 'cocoaPodName': 'UZDingZhiYouModule', 'isXib': false };
                 pageParam.ServicesInfo = { 'serviceClass': 'UZHomeService', 'serviceName': 'service' };
-                pageParam.Content = { 'webUrl': 'https://mdingzhi.uzai.com/hybrid/order/index.html?udingzhitype=' + udingzhitype };
+                pageParam.Content = { 'webUrl': 'https://mdingzhi.demo.com/hybrid/order/index.html?udingzhitype=' + udingzhitype };
                 pageParam.GA += gaInfo;
             } else if (devicetype === 'android') {
                 pageParam.IsNav = false;
-                pageParam.Url = 'https://mdingzhi.uzai.com/hybrid/order/index.html?udingzhitype=' + udingzhitype;
+                pageParam.Url = 'https://mdingzhi.demo.com/hybrid/order/index.html?udingzhitype=' + udingzhitype;
                 pageParam.GA += gaInfo;
             }
             api.invoke('open.page', encodeURI(JSON.stringify(pageParam)));
         } else {
-            window.location.href = 'https://mdingzhi.uzai.com/order/index.html?udingzhitype=' + udingzhitype;
+            window.location.href = 'https://mdingzhi.demo.com/order/index.html?udingzhitype=' + udingzhitype;
         }
     };
     //打开我的收藏
@@ -306,7 +306,7 @@ var bridge = (function(window) {
                     pageParam.ServicesInfo = { 'serviceClass': 'UZMyHomeService', 'serviceName': 'service', 'serviceMethod': '' };
                     pageParam.GA += gaInfo;
                 } else if (devicetype === 'android') {
-                    pageParam.ClassInfo = { 'ClassName': 'com.uzai.app.mvp.module.home.myuzai.activity.MyCollectionsActivity' };
+                    pageParam.ClassInfo = { 'ClassName': 'com.demo.app.mvp.module.home.mydemo.activity.MyCollectionsActivity' };
                 }
                 api.invoke('open.page', encodeURI(JSON.stringify(pageParam)));
             }
@@ -327,14 +327,14 @@ var bridge = (function(window) {
                     //pageParam.Content = { 'orderState': 1 };
                     pageParam.GA += gaInfo;
                 } else if (devicetype === 'android') {
-                    pageParam.ClassInfo = { 'ClassName': 'com.uzai.app.mvp.module.order.activity.OrderListNewActivity' };
+                    pageParam.ClassInfo = { 'ClassName': 'com.demo.app.mvp.module.order.activity.OrderListNewActivity' };
                 }
                 api.invoke('open.page', encodeURI(JSON.stringify(pageParam)));
             } else {
                 api.login(window.location.href, window.location.href);
             }
         } else {
-            window.location.href = 'https://u.uzai.com/mobile/order';
+            window.location.href = 'https://u.demo.com/mobile/order';
         }
     };
     //搜索结果
@@ -401,7 +401,7 @@ var bridge = (function(window) {
             if (cruises !== '' && cruises !== null && typeof(cruises) !== 'undefined' && cruises !== 0 && cruises !== '0') {
                 params += '&cruises=' + cruises;
             }
-            var url = 'https://m.uzai.com/search/list?' + params;
+            var url = 'https://m.demo.com/search/list?' + params;
             window.location.href = url;
         } else {
             var appversion = api.getCookie('appversion');
@@ -511,7 +511,7 @@ var bridge = (function(window) {
             api.invoke('open.orderdetail', encodeURI(JSON.stringify(pageParam)));
         } else if (devicetype === 'android') {
             var pageParam = deepClone(pageBaseParam);
-            pageParam.ClassInfo = { 'ClassName': 'com.uzai.app.activity.OrderDetailNewActivity' };
+            pageParam.ClassInfo = { 'ClassName': 'com.demo.app.activity.OrderDetailNewActivity' };
             pageParam.Content = {
                 orderID: orderID,
                 orderType: orderType
@@ -689,7 +689,7 @@ var bridge = (function(window) {
                     window.location.href = url;
                 }
             } else {
-                window.location.href = 'https://m.uzai.com';
+                window.location.href = 'https://m.demo.com';
             }
         }
     };
