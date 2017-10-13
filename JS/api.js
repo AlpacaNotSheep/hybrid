@@ -1,9 +1,3 @@
-/*
- * @Author: Kyle
- * @Date: 2017-02-16 10:36:03
- * @Last Modified by: Kyle
- * @Last Modified time: 2017-08-02 18:32:42
- */
 var api = (function(window, document) {
     'use strict';
     try {
